@@ -1,0 +1,47 @@
+{
+  "name": "{{ pkgName }}",
+  "version": "1.0.0",
+  "description": "{{ description }}",
+  "author": "{{ user.author }}",
+  "homepage": "https://github.com/{{ org }}/{{ name }}",
+  "repository": "git@github.com:{{ org }}/{{ name }}.git",
+  "dependencies": {
+    "common-boilerplate": "^0.11.0"
+  },
+  "devDependencies": {
+    "assert-file": "^1",
+    "autod": "^3",
+    "coffee": "^5",
+    "egg-bin": "^4",
+    "egg-ci": "^1",
+    "eslint": "^7",
+    "eslint-config-egg": "^9",
+    "mm": "^3",
+    "mz-modules": "^2"
+  },
+  "bin": "./bin/cli.js",
+  "files": [
+    "bin",
+    "boilerplate",
+    "index.js"
+  ],
+  "keywords": [ "boilerplate", "common-boilerplate" ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "autod": "autod",
+    "lint": "eslint .",
+    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
+    "pkgfiles": "egg-bin pkgfiles"
+  },
+  "ci": {
+    "version": "14",
+    "type": "github"
+  },
+  "eslintIgnore": [ "coverage", "dist" ],
+  "license": "MIT"
+}
