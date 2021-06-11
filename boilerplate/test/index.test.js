@@ -24,24 +24,24 @@ describe('test/index.test.js', () => {
     await coffee.fork(cli, [], { cwd: tmpDir })
       .debug()
       .waitForPrompt()
+      .writeKey('tz\n')
       .writeKey('example\n')
+      .writeKey('this is description of example\n')
       .writeKey('ENTER')
-      .writeKey('npm-showcase\n')
-      .writeKey('@npm-showcase/example\n')
+      .writeKey('tz/example\n')
       .expect('code', 0)
       .end();
 
-
-    assertFile(`${tmpDir}/README.md`, '@npm-showcase/example');
+    assertFile(`${tmpDir}/README.md`, '@tz/example');
     assertFile(`${tmpDir}/README.md`, /this is description of example/);
     assertFile(`${tmpDir}/test/example.test.js`);
     assertFile(`${tmpDir}/.gitignore`);
     assertFile(`${tmpDir}/.eslintrc`);
     assertFile(`${tmpDir}/package.json`, {
-      name: '@npm-showcase/example',
+      name: '@tz/example',
       description: 'this is description of example',
-      homepage: 'https://github.com/npm-showcase/example',
-      repository: 'git@github.com:npm-showcase/example.git',
+      homepage: 'https://github.com/tz/example',
+      repository: 'git@github.com:tz/example.git',
     });
   });
 });

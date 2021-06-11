@@ -12,36 +12,20 @@ class Boilerplate extends BaseBoilerplate {
     return __dirname;
   }
 
-  async initQuestions() {
-    return [
-      ...await super.initQuestions(),
-      {
-        name: 'name',
-        type: 'input',
-        message: 'Boilerplate Name: ',
-        default: () => this.locals.name,
-        validate: v => !!v,
-      },
-      {
-        name: 'description',
-        type: 'input',
-        message: 'Description:',
-        default: res => `Boilerplate for ${res.name}`,
-      },
-      {
-        name: 'org',
-        type: 'input',
-        message: 'Organization: ',
-        default: () => this.locals.org,
-        validate: v => !!v,
-      },
-      {
-        name: 'pkgName',
-        type: 'input',
-        message: 'Package Name: ',
-        default: res => res.name,
-      },
-    ];
+  async askQuestions() {
+    await this.askNpm({ prefix: 'create-' });
+
+    const { name, scope, npm } = this.locals;
+    const usage = `${npm} init ${scope}/${name.substring(7)}`;
+    this.setLocals({ usage });
+
+    await this.askGit();
+  }
+
+  async updatePkg(pkg) {
+    pkg = await super.updatePkg(pkg);
+    pkg.dependencies['common-boilerplate'] = this.pkgInfo.dependencies['common-boilerplate'];
+    return pkg;
   }
 }
 

@@ -8,36 +8,25 @@ class Boilerplate extends BaseBoilerplate {
     return __dirname;
   }
 
-  async initQuestions() {
-    return [
-      ...await super.initQuestions(),
-      {
-        name: 'name',
-        type: 'input',
-        message: 'Project Name: ',
-        default: () => this.locals.name,
-        validate: v => !!v,
-      },
-      {
-        name: 'description',
-        type: 'input',
-        message: 'Description:',
-        default: res => `this is description of ${res.name}`,
-      },
-      {
-        name: 'org',
-        type: 'input',
-        message: 'Organization: ',
-        default: () => this.locals.org,
-        validate: v => !!v,
-      },
-      {
-        name: 'pkgName',
-        type: 'input',
-        message: 'Package Name: ',
-        default: res => res.name,
-      },
-    ];
+  async askQuestions() {
+    await this.askNpm();
+
+    this.setLocals(await this.prompt({
+      name: 'needPublish',
+      type: 'confirm',
+      message: 'Will it publish to npm registry?',
+      default: true,
+    }));
+
+    await this.askGit();
+  }
+
+  async updatePkg(pkg) {
+    pkg = await super.updatePkg(pkg);
+    if (!this.locals.needPublish) {
+      pkg.private = true;
+    }
+    return pkg;
   }
 }
 

@@ -5,6 +5,8 @@ const mock = require('mm');
 const coffee = require('coffee');
 const assertFile = require('assert-file');
 const { rimraf, mkdirp } = require('mz-modules');
+const runscript = require('runscript');
+const hasBin = require('hasbin');
 
 describe('test/index.test.js', () => {
   const cli = path.join(__dirname, '../bin/cli.js');
@@ -21,27 +23,31 @@ describe('test/index.test.js', () => {
   });
 
   it('should work', async () => {
+    await runscript('git init', { cwd: tmpDir });
     await coffee.fork(cli, [], { cwd: tmpDir })
       .debug()
       .waitForPrompt()
-      .writeKey('example\n')
+      .writeKey('@tz\n')
+      .writeKey('boilerplate\n')
+      .writeKey('just for test\n')
       .writeKey('ENTER')
-      .writeKey('npm-showcase\n')
-      .writeKey('@npm-showcase/example\n')
       .expect('code', 0)
       .end();
 
 
-    assertFile(`${tmpDir}/README.md`, '@npm-showcase/example');
-    assertFile(`${tmpDir}/README.md`, /Boilerplate for example/);
-    assertFile(`${tmpDir}/test/example.test.js`);
+    assertFile(`${tmpDir}/README.md`, 'just for test');
+    assertFile(`${tmpDir}/README.md`, 'npm init @tz/boilerplate');
+    assertFile(`${tmpDir}/test/index.test.js`);
     assertFile(`${tmpDir}/.gitignore`);
     assertFile(`${tmpDir}/.eslintrc`);
     assertFile(`${tmpDir}/package.json`, {
-      name: '@npm-showcase/example',
-      description: 'Boilerplate for example',
-      homepage: 'https://github.com/npm-showcase/example',
-      repository: 'git@github.com:npm-showcase/example.git',
+      name: '@tz/create-boilerplate',
+      description: 'just for test',
+      homepage: 'https://github.com/tz/create-boilerplate',
+      repository: 'git@github.com:tz/create-boilerplate.git',
+      dependencies: {
+        'common-boilerplate': require('../package.json').dependencies['common-boilerplate'],
+      },
     });
 
     assertFile(`${tmpDir}/bin/cli.js`);
@@ -49,5 +55,10 @@ describe('test/index.test.js', () => {
     assertFile(`${tmpDir}/boilerplate/_package.json`, {
       name: '{{ pkgName }}',
     });
+
+    const npmCli = hasBin.first.sync([ 'tnpm', 'npminstall', 'npm' ]);
+    console.log(`> run test for boilerplate's boilerplate with ${npmCli}`);
+    await runscript(`${npmCli} i --loglevel=info`, { cwd: tmpDir });
+    await runscript(`${npmCli} test`, { cwd: tmpDir });
   });
 });

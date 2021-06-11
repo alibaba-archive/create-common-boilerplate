@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "{{ description }}",
   "author": "{{ user.author }}",
-  "homepage": "https://github.com/{{ org }}/{{ name }}",
-  "repository": "git@github.com:{{ org }}/{{ name }}.git",
+  "homepage": "{{ homepage }}",
+  "repository": "{{ gitInfo.href }}",
+  "private": false,
   "dependencies": {},
   "devDependencies": {
     "autod": "^3",
