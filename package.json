@@ -1,0 +1,54 @@
+{
+  "name": "create-common-boilerplate",
+  "version": "0.3.0",
+  "description": "boilerplate for [common-boilerplate](https://github.com/node-modules/common-boilerplate), use `npm init common-boilerplate`",
+  "repository": "git@github.com:node-modules/create-common-boilerplate.git",
+  "homepage": "https://github.com/node-modules/create-common-boilerplate",
+  "author": "TZ <atian25@qq.com> (https://github.com/atian25)",
+  "dependencies": {
+    "common-boilerplate": "^0.14.0"
+  },
+  "devDependencies": {
+    "assert-file": "^1",
+    "autod": "^3",
+    "coffee": "^5",
+    "egg-bin": "^4",
+    "egg-ci": "^1",
+    "eslint": "^7",
+    "eslint-config-egg": "^9",
+    "hasbin": "^1.2.3",
+    "mm": "^3",
+    "mz-modules": "^2"
+  },
+  "bin": "./bin/cli.js",
+  "files": [
+    "bin",
+    "boilerplate",
+    "index.js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "boilerplate",
+    "common-boilerplate"
+  ],
+  "scripts": {
+    "autod": "autod",
+    "lint": "eslint .",
+    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
+    "pkgfiles": "egg-bin pkgfiles"
+  },
+  "ci": {
+    "version": "12, 14",
+    "type": "github"
+  },
+  "eslintIgnore": [
+    "coverage",
+    "dist"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "{{ pkgName }}",
+  "version": "1.0.0",
+  "description": "{{ description }}",
+  "author": "{{ user.author }}",
+  "homepage": "{{ homepage }}",
+  "repository": "{{ gitInfo.href }}",
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "autod": "^3",
+    "egg-bin": "^4",
+    "egg-ci": "^1",
+    "eslint": "^7",
+    "eslint-config-egg": "^9"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "index.js"
+  ],
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint .",
+    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
+    "pkgfiles": "egg-bin pkgfiles",
+    "autod": "autod"
+  },
+  "ci": {
+    "version": "14",
+    "type": "github"
+  },
+  "eslintIgnore": [
+    "coverage",
+    "dist"
+  ],
+  "license": "MIT"
+}
